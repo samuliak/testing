@@ -16,10 +16,10 @@ public class AirCompany {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "air_id", insertable = false, updatable = false)
+    @Column(name = "air_id")
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "company_type")

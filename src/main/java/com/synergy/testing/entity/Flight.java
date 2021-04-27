@@ -16,7 +16,7 @@ public class Flight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", insertable = false, updatable = false)
+    @Column(name = "ID")
     private long id;
 
     @Enumerated(EnumType.STRING)
