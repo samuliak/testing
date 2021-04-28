@@ -7,11 +7,13 @@ import com.synergy.testing.service.AirplaneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
 @RestController
+@RequestMapping("/airplane")
 public class AirplaneController {
 
     private final AirplaneService airplaneService;
@@ -46,9 +48,9 @@ public class AirplaneController {
      *
      * @param airplaneId - airplane`s identifier
      * @param companyId - companies`s identifier
-     * @return
+     * @return boolean result
      */
-    @GetMapping(value = "/airplane/{airplaneId}/company/{companyId}")
+    @GetMapping("/airplane/id={airplaneId}/company/id={companyId}")
     public boolean changeCompanyIdToAirplane(
             @PathVariable("airplaneId") long airplaneId,
             @PathVariable("companyId") long companyId) {
@@ -59,10 +61,10 @@ public class AirplaneController {
     /**
      * Get airplane by ID
      *
-     * @param airplaneId
-     * @return
+     * @param airplaneId - airplane`s identifier
+     * @return airplane object
      */
-    @GetMapping(value = "/airplane/{airplaneId}")
+    @GetMapping("/airplane/id={airplaneId}")
     public Airplane getAirplaneById(@PathVariable("airplaneId") long airplaneId) {
         return airplaneService.getById(airplaneId);
     }

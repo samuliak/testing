@@ -24,10 +24,10 @@ public class Flight {
     private FlightStatus flightStatus;
 
     @Column(name = "air_company_id")
-    private int airCompanyId;
+    private long airCompanyId;
 
     @Column(name = "airplane_id")
-    private int airplaneId;
+    private long airplaneId;
 
     @Column(name = "departure_country")
     private String departureCountry;

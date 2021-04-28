@@ -14,4 +14,6 @@ public interface AirCompanyService {
 
     void delete(long id);
 
+    AirCompany getAirCompanyByName(String name);
+
 }

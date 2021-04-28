@@ -43,4 +43,9 @@ public class AirCompanyServiceImpl implements AirCompanyService {
         if (companyRepo.existsById(id))
             companyRepo.deleteById(id);
     }
+
+    @Override
+    public AirCompany getAirCompanyByName(String name) {
+        return companyRepo.findAirCompanyByName(name);
+    }
 }
