@@ -1,5 +1,6 @@
 package com.synergy.testing.controller;
 
+import com.synergy.testing.dto.FlightDTO;
 import com.synergy.testing.entity.Flight;
 import com.synergy.testing.entity.FlightStatus;
 import com.synergy.testing.service.FlightService;
@@ -37,7 +38,7 @@ public class FlightController {
      * 3) Endpoint to find all Air Company Flights by status (use company name for identification of Air Company).
      *
      * @param companyName - air company name
-     * @param status - flight status (ACTIVE, COMPLETED, DELAYED, PENDING)
+     * @param status      - flight status (ACTIVE, COMPLETED, DELAYED, PENDING)
      * @return flight list
      */
     @GetMapping("/company/name={companyName}/status={status}")
@@ -55,8 +56,19 @@ public class FlightController {
      * @return flight list
      */
     @GetMapping("/active")
-    public List<Flight> getFlightsByActiveStatus() {
+    public List<Flight> getAllByActiveStatus() {
         return flightService.findAllByStatusAndStartedMoreThanDay(FlightStatus.ACTIVE);
     }
 
+
+    @PostMapping
+    public boolean saveFlight(@RequestBody FlightDTO flightDTO) {
+        return flightService.save(flightDTO.getFlight());
+    }
+
+
+    @GetMapping("/id={id}/status={status}")
+    public boolean changeFlightStatus(@PathVariable("id") long id, @PathVariable("status") FlightStatus status) {
+        return flightService.changeFlightStatus(id, status);
+    }
 }

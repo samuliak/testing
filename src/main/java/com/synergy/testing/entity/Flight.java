@@ -3,6 +3,7 @@ package com.synergy.testing.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -47,6 +48,7 @@ public class Flight {
     private Date endedAt;
 
     @Temporal(TemporalType.TIMESTAMP)
+//    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm")
     @Column(name = "delay_started_at")
     private Date delayStartedAt;
 

@@ -1,21 +1,27 @@
 package com.synergy.testing.controller;
 
 import com.synergy.testing.dto.AirplaneDTO;
+import com.synergy.testing.entity.AirCompany;
 import com.synergy.testing.entity.Airplane;
+import com.synergy.testing.service.AirCompanyService;
 import com.synergy.testing.service.AirplaneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/airplane")
 public class AirplaneController {
 
     private final AirplaneService airplaneService;
+    private final AirCompanyService airCompanyService;
 
     @Autowired
-    public AirplaneController(AirplaneService airplaneService) {
+    public AirplaneController(AirplaneService airplaneService, AirCompanyService airCompanyService) {
         this.airplaneService = airplaneService;
-    }
+        this.airCompanyService = airCompanyService;
+
 
 //        AirCompany airCompany1 = new AirCompany();
 //        airCompany1.setName("AirCompany1");
@@ -33,7 +39,7 @@ public class AirplaneController {
 //        airplane.setNumberOfFlights(0);
 //        airplane.setType("type1");
 //        this.airplaneService.save(airplane);
-
+    }
 
     /**
      * 2. Endpoint to move airplanes between companies (simple endpoint to reassign airplane to another company)

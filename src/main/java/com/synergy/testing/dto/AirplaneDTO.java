@@ -1,12 +1,13 @@
 package com.synergy.testing.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.synergy.testing.entity.Airplane;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ public class AirplaneDTO {
 
     private String type;
 
+    @Temporal(TemporalType.DATE)
     private Date createdAt;
 
     public Airplane getAirplane() {

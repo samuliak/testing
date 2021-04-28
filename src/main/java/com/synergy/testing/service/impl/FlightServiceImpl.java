@@ -6,22 +6,24 @@ import com.synergy.testing.entity.FlightStatus;
 import com.synergy.testing.repo.FlightRepo;
 import com.synergy.testing.service.AirCompanyService;
 import com.synergy.testing.service.FlightService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
 public class FlightServiceImpl implements FlightService {
 
-    private FlightRepo flightRepo;
-    private AirCompanyService airCompanyService;
+    private final FlightRepo flightRepo;
+    private final AirCompanyService airCompanyService;
 
     @Autowired
     public FlightServiceImpl(FlightRepo flightRepo, AirCompanyService airCompanyService) {
@@ -30,9 +32,12 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public void save(Flight flight) {
-        if (flight != null)
-            flightRepo.save(flight);
+    public boolean save(Flight flight) {
+        if (flight == null)
+            return false;
+
+        flightRepo.save(flight);
+        return true;
     }
 
     @Override
@@ -48,9 +53,11 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public void delete(long id) {
-        if (flightRepo.existsById(id))
-            flightRepo.deleteById(id);
+    public boolean delete(long id) {
+        if (!flightRepo.existsById(id))
+            return false;
+        flightRepo.deleteById(id);
+        return true;
     }
 
     @Override
@@ -70,5 +77,32 @@ public class FlightServiceImpl implements FlightService {
         return flightRepo.findAllByFlightStatusAndCreatedAtBefore(status, calendar.getTime());
     }
 
+    @Override
+    public boolean changeFlightStatus(long id, FlightStatus status) {
+        if (!flightRepo.existsById(id) || !Arrays.asList(FlightStatus.values()).contains(status))
+            return false;
+
+        Flight flight = flightRepo.findById(id).get();
+        int queryExecute = 0;
+
+        if (status == FlightStatus.ACTIVE) {
+            Date dateCreated = new Date();
+            long timeInSec = (long) ((double) flight.getDistance() / (double) 700 * 3600);
+            int sec = (int) (timeInSec % 60);
+            int hour = (int) (timeInSec / 60);
+            int min = hour % 60;
+            hour = hour / 60;
+            Time time = new Time(hour, min, sec);
+            queryExecute = flightRepo.setFlightStatusActive(id, dateCreated, time);
+        }
+
+        if (status == FlightStatus.DELAYED)
+            queryExecute = flightRepo.setFlightStatusDelayed(id, new Date());
+
+        if (status == FlightStatus.COMPLETED)
+            queryExecute = flightRepo.setFlightStatusCompleted(id, new Date());
+
+        return queryExecute > 0;
+    }
 
 }
