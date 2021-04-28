@@ -25,9 +25,11 @@ public class AirplaneServiceImpl implements AirplaneService {
 
 
     @Override
-    public void save(Airplane airplane) {
-        if (airplane != null)
-            airplaneRepo.save(airplane);
+    public boolean save(Airplane airplane) {
+        if (airplane == null)
+            return false;
+        airplaneRepo.save(airplane);
+        return true;
     }
 
     @Override
@@ -43,9 +45,11 @@ public class AirplaneServiceImpl implements AirplaneService {
     }
 
     @Override
-    public void delete(long id) {
-        if (airplaneRepo.existsById(id))
-            airplaneRepo.deleteById(id);
+    public boolean delete(long id) {
+        if (!airplaneRepo.existsById(id))
+            return false;
+        airplaneRepo.deleteById(id);
+        return true;
     }
 
     @Override

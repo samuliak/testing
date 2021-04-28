@@ -18,4 +18,5 @@ public interface FlightService {
 
     List<Flight> findAllByAirCompanyAndFlightStatus(String companyName, FlightStatus status);
 
+    List<Flight> findAllByStatusAndStartedMoreThanDay(FlightStatus status);
 }

@@ -9,7 +9,10 @@ import com.synergy.testing.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -58,4 +61,14 @@ public class FlightServiceImpl implements FlightService {
             list = flightRepo.findAllByAirCompanyIdAndFlightStatus(airCompany.getId(), status);
         return list;
     }
+
+    @Override
+    public List<Flight> findAllByStatusAndStartedMoreThanDay(FlightStatus status) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, -23);
+        return flightRepo.findAllByFlightStatusAndCreatedAtBefore(status, calendar.getTime());
+    }
+
+
 }
