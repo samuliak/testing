@@ -28,6 +28,7 @@ public class AirplaneServiceImpl implements AirplaneService {
     public boolean save(Airplane airplane) {
         if (airplane == null)
             return false;
+
         airplaneRepo.save(airplane);
         return true;
     }

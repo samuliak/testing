@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 
@@ -29,13 +30,13 @@ public class FlightDTO {
 
     private int distance;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd")
+    //    @JsonFormat(pattern = "yyyy-MM-dd")
     private Time estimatedFlightTime;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date endedAt;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date delayStartedAt;
 
     // походу криейт не передавать,
@@ -55,6 +56,22 @@ public class FlightDTO {
         flight.setDelayStartedAt(this.delayStartedAt);
 
         return flight;
+    }
+
+    public boolean isValid() {
+
+        if (this.airCompanyId < 0)
+            return false;
+        if (this.airplaneId <= 0)
+            return false;
+        if (this.departureCountry.isBlank() || this.departureCountry.length() > 64)
+            return false;
+        if (this.destinationCountry.isBlank() || this.destinationCountry.length() > 64)
+            return false;
+        if (this.distance < 0)
+            return false;
+
+        return true;
     }
 
 }

@@ -33,59 +33,37 @@ public class FlightController {
     }
 
 
-    /**
-     * 3) Endpoint to find all Air Company Flights by status (use company name for identification of Air Company).
-     *
-     * @param companyName - air company name
-     * @param status      - flight status (ACTIVE, COMPLETED, DELAYED, PENDING)
-     * @return flight list
-     */
     @GetMapping("/company/name={companyName}/status={status}")
     public List<Flight> getFlightsByCompanyNameAndStatus(
             @PathVariable("companyName") String companyName,
-            @PathVariable("status") String status) {
-
-        return flightService.findAllByAirCompanyAndFlightStatus(companyName, FlightStatus.valueOf(status));
+            @PathVariable("status") FlightStatus status) {
+        if (companyName.isBlank() || companyName.length() > 64 || !FlightStatus.isPresent(status))
+            return null;
+        return flightService.findAllByAirCompanyAndFlightStatus(companyName, status);
     }
 
 
-    /**
-     * 4) Endpoint to find all Flights in ACTIVE status and started more than 24 hours ago.
-     *
-     * @return flight list
-     */
     @GetMapping("/active")
     public List<Flight> getAllByActiveStatus() {
         return flightService.findAllByStatusAndStartedMoreThanDay(FlightStatus.ACTIVE);
     }
 
 
-    /**
-     * 6) Endpoint to add new Flight (set status to PENDING)
-     *
-     * @param flightDTO - dto for json parse
-     * @return boolean successfully
-     */
     @PostMapping
     public boolean saveFlight(@RequestBody FlightDTO flightDTO) {
+        if (!flightDTO.isValid())
+            return false;
         return flightService.save(flightDTO.getFlight());
     }
 
 
-    /**
-     * 7) Endpoint to change Flight status:
-     * if status to change is DELAYED – set delay started at
-     * if status to change is ACTIVE – set started at
-     * if status to change is COMPLETED set ended at
-     *
-     * @param id     - flight id
-     * @param status - flight status
-     * @return boolean successfully
-     */
     @GetMapping("/id={id}/status={status}")
     public boolean changeFlightStatus(@PathVariable("id") long id, @PathVariable("status") FlightStatus status) {
+        if (id <= 0 || !FlightStatus.isPresent(status))
+            return false;
         return flightService.changeFlightStatus(id, status);
     }
+
 
     @GetMapping("/endpoint8")
     public List<Flight> findAllByCompletedStatusAndTime() {

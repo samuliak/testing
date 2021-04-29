@@ -8,13 +8,16 @@ import com.synergy.testing.service.AirCompanyService;
 import com.synergy.testing.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
+@Validated
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepo flightRepo;
@@ -27,7 +30,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public boolean save(Flight flight) {
+    public boolean save(@Valid Flight flight) {
         if (flight == null)
             return false;
 
@@ -74,7 +77,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public boolean changeFlightStatus(long id, FlightStatus status) {
-        if (!flightRepo.existsById(id) || !Arrays.asList(FlightStatus.values()).contains(status))
+        if (!flightRepo.existsById(id) || !FlightStatus.isPresent(status))
             return false;
 
         Flight flight = flightRepo.findById(id).get();

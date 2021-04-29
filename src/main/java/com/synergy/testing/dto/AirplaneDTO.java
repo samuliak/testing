@@ -1,13 +1,19 @@
 package com.synergy.testing.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.synergy.testing.entity.Airplane;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.Objects;
 
@@ -49,5 +55,24 @@ public class AirplaneDTO {
         airplane.setCreatedAt(Objects.requireNonNullElseGet(this.createdAt, Date::new));
 
         return airplane;
+    }
+
+    public boolean isValid() {
+        if (this.name.isBlank() && this.name.length() > 128)
+            return false;
+        if (this.factorySerialNumber <= 0)
+            return false;
+        if (this.airCompany < 0)
+            return false;
+        if (this.numberOfFlights < 0)
+            return false;
+        if (this.flightDistance <= 0)
+            return false;
+        if (this.fuelCapacity <= 0)
+            return false;
+        if (this.type.isBlank() || this.type.length() > 64)
+            return false;
+
+        return true;
     }
 }
