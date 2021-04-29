@@ -22,4 +22,7 @@ public interface FlightService {
 
     @Transactional
     boolean changeFlightStatus(long id, FlightStatus status);
+
+    List<Flight> findAllByCompleteStatusAndTime();
+
 }

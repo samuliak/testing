@@ -7,7 +7,6 @@ import com.synergy.testing.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -61,14 +60,36 @@ public class FlightController {
     }
 
 
+    /**
+     * 6) Endpoint to add new Flight (set status to PENDING)
+     *
+     * @param flightDTO - dto for json parse
+     * @return boolean successfully
+     */
     @PostMapping
     public boolean saveFlight(@RequestBody FlightDTO flightDTO) {
         return flightService.save(flightDTO.getFlight());
     }
 
 
+    /**
+     * 7) Endpoint to change Flight status:
+     * if status to change is DELAYED – set delay started at
+     * if status to change is ACTIVE – set started at
+     * if status to change is COMPLETED set ended at
+     *
+     * @param id     - flight id
+     * @param status - flight status
+     * @return boolean successfully
+     */
     @GetMapping("/id={id}/status={status}")
     public boolean changeFlightStatus(@PathVariable("id") long id, @PathVariable("status") FlightStatus status) {
         return flightService.changeFlightStatus(id, status);
     }
+
+    @GetMapping("/endpoint8")
+    public List<Flight> findAllByCompletedStatusAndTime() {
+        return flightService.findAllByCompleteStatusAndTime();
+    }
+
 }

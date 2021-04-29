@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.Time;
 import java.util.Date;
@@ -17,16 +18,20 @@ public interface FlightRepo extends CrudRepository<Flight, Long> {
 
     List<Flight> findAllByFlightStatusAndCreatedAtBefore(FlightStatus status, Date date);
 
+    @Query("SELECT f FROM Flight f WHERE f.flightStatus = :status")
+    List<Flight> findAllByFlightStatus(@PathVariable("status") FlightStatus status);
+
     @Modifying
-    @Query("UPDATE Flight f set f.flightStatus = 'ACTIVE', f.delayStartedAt =:date, f.estimatedFlightTime=:time WHERE f.id = :id")
+    @Query("UPDATE Flight f set f.flightStatus = 'ACTIVE', f.delayStartedAt = :date, f.estimatedFlightTime = :time WHERE f.id = :id")
     int setFlightStatusActive(@Param("id") long id, @Param("date") Date date, @Param("time") Time time);
 
     // need more information about fields
     @Modifying
-    @Query("UPDATE Flight f set f.flightStatus = 'DELAYED', f.delayStartedAt =:date WHERE f.id = :id")
+    @Query("UPDATE Flight f set f.flightStatus = 'DELAYED', f.delayStartedAt = :date WHERE f.id = :id")
     int setFlightStatusDelayed(@Param("id") long id, @Param("date") Date date);
 
     @Modifying
-    @Query("UPDATE Flight f set f.flightStatus = 'COMPLETED', f.endedAt =:date WHERE f.id = :id")
+    @Query("UPDATE Flight f set f.flightStatus = 'COMPLETED', f.endedAt = :date WHERE f.id = :id")
     int setFlightStatusCompleted(@Param("id") long id, @Param("date") Date date);
+
 }

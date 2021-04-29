@@ -6,15 +6,10 @@ import com.synergy.testing.entity.FlightStatus;
 import com.synergy.testing.repo.FlightRepo;
 import com.synergy.testing.service.AirCompanyService;
 import com.synergy.testing.service.FlightService;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -103,6 +98,32 @@ public class FlightServiceImpl implements FlightService {
             queryExecute = flightRepo.setFlightStatusCompleted(id, new Date());
 
         return queryExecute > 0;
+    }
+
+    @Override
+    public List<Flight> findAllByCompleteStatusAndTime() {
+        List<Flight> flightCompleted = flightRepo.findAllByFlightStatus(FlightStatus.COMPLETED);
+        List<Flight> returnList;
+        returnList = flightCompleted
+                .stream()
+                .filter(f -> differenceBetweenDateBiggerThanEstimatedFlightTime(
+                        f.getCreatedAt(),
+                        f.getEndedAt(),
+                        f.getEstimatedFlightTime()))
+                .collect(Collectors.toList());
+
+        return returnList;
+    }
+
+    private boolean differenceBetweenDateBiggerThanEstimatedFlightTime(Date creat, Date end, Date estimated) {
+        Time time1 = new Time(creat.getTime());
+        Time time2 = new Time(end.getTime());
+        Time time3 = new Time(estimated.getTime());
+
+        Time created = new Time(time1.getHours(), time1.getMinutes(), time1. getSeconds());
+        Time ended = new Time(time2.getHours(), time2.getMinutes(), time2. getSeconds());
+
+        return created.getTime() - ended.getTime() > time3.getTime();
     }
 
 }
