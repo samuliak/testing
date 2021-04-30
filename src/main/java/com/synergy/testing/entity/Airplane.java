@@ -3,7 +3,6 @@ package com.synergy.testing.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -37,7 +36,7 @@ public class Airplane {
      have a same situation in Flight entity */
 //    @JoinTable(name = "air_company")
 //    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "air_id")
+//    @JoinColumn(name = "id")
     @NotNull
     @Min(1)
     @Column(name = "air_company_id")
@@ -57,7 +56,7 @@ public class Airplane {
     private double fuelCapacity;
 
     @NotBlank
-    @Length(min = 1, max = 64)
+    @Size(min = 1, max = 64)
     @Column(name = "type")
     private String type;
 

@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -37,4 +38,6 @@ public class AirCompany {
     @Column(name = "founded_at")
     private Date foundedAt;
 
+    @OneToMany(mappedBy = "air_company_id", cascade = CascadeType.ALL)
+    private Set<Airplane> airplaneSet;
 }
