@@ -1,23 +1,29 @@
 package com.synergy.testing.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "airplane")
-public class Airplane {
+public class Airplane implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private long id;
 
     @NotBlank
@@ -31,20 +37,15 @@ public class Airplane {
     private long factorySerialNumber;
 
 
-    /*  can make dependencies between tables, but then according to the conditions,
-     I cannot have a "air company id" long int the table
-     have a same situation in Flight entity */
-//    @JoinTable(name = "air_company")
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "id")
-    @NotNull
-    @Min(1)
-    @Column(name = "air_company_id")
-    private long airCompany;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "air_company_id")
+    private AirCompany airCompany;
 
-    @NotNull
-    @Column(name = "number_of_flights")
-    private int numberOfFlights;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "airplane")
+    private List<Flight> numberOfFlights;
 
     @Positive
     @Column(name = "flight_distance")

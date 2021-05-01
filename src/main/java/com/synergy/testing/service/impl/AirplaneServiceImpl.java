@@ -59,7 +59,7 @@ public class AirplaneServiceImpl implements AirplaneService {
         if (companyService.getById(companyId) == null || airplane == null)
             return false;
 
-        airplane.setAirCompany(companyId);
+        airplane.setAirCompany(companyService.getById(companyId));
         this.save(airplane);
         return true;
     }

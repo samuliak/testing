@@ -1,14 +1,15 @@
 package com.synergy.testing.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.synergy.testing.entity.Flight;
 import com.synergy.testing.entity.FlightStatus;
+import com.synergy.testing.service.AirCompanyService;
+import com.synergy.testing.service.AirplaneService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
 
@@ -17,6 +18,10 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FlightDTO {
+
+    private AirplaneService airplaneService;
+    private AirCompanyService airCompanyService;
+
 
     private long id;
 
@@ -30,22 +35,20 @@ public class FlightDTO {
 
     private int distance;
 
-    //    @JsonFormat(pattern = "yyyy-MM-dd")
     private Time estimatedFlightTime;
 
-    //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date endedAt;
 
-    //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date delayStartedAt;
 
-    // походу криейт не передавать,
     private Date createdAt;
 
     public Flight getFlight() {
         Flight flight = new Flight();
-        flight.setAirplaneId(this.airplaneId);
-        flight.setAirCompanyId(this.airCompanyId);
+        if (airplaneService.getById(airplaneId) != null && airCompanyService.getById(airCompanyId) != null) {
+            flight.setAirplane(airplaneService.getById(airplaneId));
+            flight.setAirCompany(airCompanyService.getById(airCompanyId));
+        } else return null;
         flight.setFlightStatus(FlightStatus.PENDING);
         flight.setDistance(this.distance);
         flight.setDestinationCountry(this.destinationCountry);
@@ -58,7 +61,9 @@ public class FlightDTO {
         return flight;
     }
 
-    public boolean isValid() {
+    public boolean isValid(AirplaneService airplaneService, AirCompanyService airCompanyService) {
+        this.airplaneService = airplaneService;
+        this.airCompanyService = airCompanyService;
 
         if (this.airCompanyId < 0)
             return false;

@@ -1,11 +1,12 @@
 package com.synergy.testing.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -13,22 +14,24 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Table(name = "flight")
-public class Flight {
+public class Flight implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "flight_status")
     private FlightStatus flightStatus;
 
-    @Column(name = "air_company_id")
-    private long airCompanyId;
+    @ManyToOne
+    @JoinColumn(name = "air_company_id")
+    private AirCompany airCompany;
 
-    @Column(name = "airplane_id")
-    private long airplaneId;
+    @ManyToOne
+    @JoinColumn(name = "airplane_id")
+    private Airplane airplane;
 
     @Column(name = "departure_country")
     private String departureCountry;

@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface AirCompanyService {
 
-    void save(AirCompany airCompany);
+    boolean save(AirCompany airCompany);
 
     AirCompany getById(long id);
 
     List<AirCompany> getAll();
 
-    void delete(long id);
+    boolean delete(long id);
 
     AirCompany getAirCompanyByName(String name);
 

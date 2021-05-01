@@ -21,9 +21,11 @@ public class AirCompanyServiceImpl implements AirCompanyService {
     }
 
     @Override
-    public void save(AirCompany airCompany) {
-        if (airCompany != null)
-            companyRepo.save(airCompany);
+    public boolean save(AirCompany airCompany) {
+        if (airCompany == null)
+            return false;
+        companyRepo.save(airCompany);
+        return true;
     }
 
     @Override
@@ -39,9 +41,11 @@ public class AirCompanyServiceImpl implements AirCompanyService {
     }
 
     @Override
-    public void delete(long id) {
-        if (companyRepo.existsById(id))
-            companyRepo.deleteById(id);
+    public boolean delete(long id) {
+        if (!companyRepo.existsById(id))
+            return false;
+        companyRepo.deleteById(id);
+        return true;
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.synergy.testing.controller;
 import com.synergy.testing.dto.FlightDTO;
 import com.synergy.testing.entity.Flight;
 import com.synergy.testing.entity.FlightStatus;
+import com.synergy.testing.service.AirCompanyService;
+import com.synergy.testing.service.AirplaneService;
 import com.synergy.testing.service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +16,17 @@ import java.util.List;
 public class FlightController {
 
     private final FlightService flightService;
+    private final AirCompanyService airCompanyService;
+    private final AirplaneService airplaneService;
 
     @Autowired
-    public FlightController(FlightService flightService) {
+    public FlightController(
+            FlightService flightService,
+            AirCompanyService airCompanyService,
+            AirplaneService airplaneService) {
         this.flightService = flightService;
-//        Flight flight = new Flight();
-//        flight.setCreatedAt(new Date());
-//        flight.setFlightStatus(FlightStatus.COMPLETED);
-//        flight.setAirCompanyId(1);
-//        flight.setAirplaneId(1);
-//        flight.setEstimatedFlightTime(new Date());
-//        flight.setDelayStartedAt(new Date());
-//        flight.setDepartureCountry("country1");
-//        flight.setDestinationCountry("country2");
-//        flight.setDistance(1000);
-//        flight.setEndedAt(new Date());
-//        this.flightService.save(flight);
+        this.airCompanyService = airCompanyService;
+        this.airplaneService = airplaneService;
     }
 
 
@@ -51,7 +48,7 @@ public class FlightController {
 
     @PostMapping
     public boolean saveFlight(@RequestBody FlightDTO flightDTO) {
-        if (!flightDTO.isValid())
+        if (!flightDTO.isValid(airplaneService, airCompanyService))
             return false;
         return flightService.save(flightDTO.getFlight());
     }

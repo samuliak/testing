@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "004a08b3-18f6-4198-9e12-bbc9e257978b",
+		"name": "Synergy-testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1) getAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/aircompany/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aircompany",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1) getByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/aircompany/name=comp3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aircompany",
+						"name=comp3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1) getById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/aircompany/id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aircompany",
+						"id=1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1) save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"compTest2\",\r\n    \"companyType\":\"own\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/aircompany",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aircompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2) Endpoint to move airplanes between companies",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/airplane/id=2/company/id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"airplane",
+						"id=2",
+						"company",
+						"id=2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3) Endpoint to find all Air Company Flights by status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/flight/company/name=comp1/status=PENDING",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"flight",
+						"company",
+						"name=comp1",
+						"status=PENDING"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4) Endpoint to find all Flights in ACTIVE status and started more than 24 hours ago.",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/flight/active",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"flight",
+						"active"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5) Endpoint to add new Airplane",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"test4\",\r\n    \"factorySerialNumber\":64214,\r\n    \"airCompany\":100,\r\n    \"flightDistance\":54,\r\n    \"fuelCapacity\":1244.1,\r\n    \"type\":\"type\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/airplane",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"airplane"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6) Endpoint to add new Flight",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"airCompanyId\":1,\r\n    \"airplaneId\":1,\r\n    \"departureCountry\":\"country1\",\r\n    \"destinationCountry\":\"country2\",\r\n    \"distance\":554\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/flight",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"flight"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7) Endpoint to change Flight status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/flight/id=8/status=COMPLETED",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"flight",
+						"id=8",
+						"status=COMPLETED"
+					]
+				},
+				"description": "Change status and ID for testing"
+			},
+			"response": []
+		},
+		{
+			"name": "8) (Optional) Endpoint to find all Flights in COMPLETED status and",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/flight/endpoint8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"flight",
+						"endpoint8"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
