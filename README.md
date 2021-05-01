@@ -1,4 +1,4 @@
-# testing
+# Synergy - testing
 Let`s to start program =)
 
 Just do all step-by-step.
